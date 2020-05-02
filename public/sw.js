@@ -1,18 +1,14 @@
 const FILES_TO_CACHE = [
 	"/",
 	"/index.html",
-	"/index.js",
 	"/manifest.webmanifest",
-	"/style.css",
-	"https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.3.1/materia/bootstrap.css",
-	"https://use.fontawesome.com/releases/v5.8.2/css/all.css",
+	"/index.js",
+	"/styles.css",
 	"/icons/icon-192x192.png",
 	"/icons/icon-512x512.png"
 ];
-
 const CACHE_NAME = "static-cache-v2";
 const DATA_CACHE_NAME = "data-cache-v1";
-
 // install
 self.addEventListener("install", function (evt) {
 	evt.waitUntil(
@@ -21,10 +17,8 @@ self.addEventListener("install", function (evt) {
 			return cache.addAll(FILES_TO_CACHE);
 		})
 	);
-
 	self.skipWaiting();
 });
-
 // activate
 self.addEventListener("activate", function (evt) {
 	evt.waitUntil(
@@ -39,10 +33,8 @@ self.addEventListener("activate", function (evt) {
 			);
 		})
 	);
-
 	self.clients.claim();
 });
-
 // fetch
 self.addEventListener("fetch", function (evt) {
 	if (evt.request.url.includes("/api/")) {
@@ -65,10 +57,8 @@ self.addEventListener("fetch", function (evt) {
 				})
 				.catch((err) => console.log(err))
 		);
-
 		return;
 	}
-
 	evt.respondWith(
 		caches.open(CACHE_NAME).then((cache) => {
 			return cache.match(evt.request).then((response) => {
